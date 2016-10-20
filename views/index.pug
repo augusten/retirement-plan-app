@@ -1,0 +1,57 @@
+html
+	head
+		title Retirement plans application
+		link(rel="stylesheet" href="/bootstrap/css/bootstrap.min.css")
+		//- link(rel="stylesheet" href="./includes/main.css")
+	body
+		div(class="row")
+			div(class="col-sm-5")
+			h1(class="col-sm-5") Hello, future pensioner!
+			br
+		//- p Provide some data for us to calculate how rich you will be
+			//- later make action = 'result'
+		div(class="container")
+			form(method='POST', action='/result')
+				div(class="form-group row")
+					label(for="name" class="col-sm-2 col-form-label") Name: 
+					div(class="col-sm-10")
+						//- br
+						input(
+							type='text'
+							name='name'
+						)
+				div(class="form-group row")
+					label(for="age" class="col-sm-2 col-form-label") Age: 
+					div(class="col-sm-10")
+						//- br
+						input(
+							type='text'
+							name='age'
+						)
+				div(class="form-group row")
+					label(for="scapital" class="col-sm-2 col-form-label") Start capital: 
+					div(class="col-sm-10")
+						//- br
+						input(
+							type='text'
+							name='scapital'
+						)
+				div(class="form-group row")
+					label(for="monthly" class="col-sm-2 col-form-label") Monthly addition: 
+					div(class="col-sm-10")
+						//- br
+						input(
+							type='text'
+							name='monthly'
+						)
+				div(class="form-group row")
+					label(for="rage" class="col-sm-2 col-form-label") Retirement age: 
+					div(class="col-sm-10")
+						select(class="form-control" id="pensionSelect")
+							- let counter = [60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70]
+							each item in counter
+								option #{item}
+					br
+				div(class="form-group row")
+					div(class="col-sm-5")
+					button(type="submit" class="btn btn-primary col-sm-2") Submit
