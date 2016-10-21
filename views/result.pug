@@ -9,8 +9,11 @@ html
 		div(class="row")
 			div(class="col-sm-2")
 			div(class="col-sm-8")
-				p In the pessimistic scenario with 2% interest you would get #{ userData.pension.endamount.pessimistic } of money $$$
-				p In the neutral scenario with 4% interest you would get #{ userData.pension.endamount.average } of money $$$
-				p In the pessimistic scenario with 8% interest you would get #{ userData.pension.endamount.optimistic } of money $$$
-				p #{ userData.finances.yearlyincrease}
+				if userData.pension.endamount.pessimistic == undefined
+					p We simulated taking a random fluctuation between 2% and 8%, and the simualation gave back that your possible end amount will be #{ userData.pension.endamount.fluctuating }
+				else if userData.pension.endamount.fluctuating == undefined
+					p In the pessimistic scenario with 2% interest you would get #{ userData.pension.endamount.pessimistic } of money $$$
+					p In the neutral scenario with 4% interest you would get #{ userData.pension.endamount.average } of money $$$
+					p In the pessimistic scenario with 8% interest you would get #{ userData.pension.endamount.optimistic } of money $$$
 			div(class="col-sm-2")
+		script(src="/js/jquery-3.1.1.min.js")

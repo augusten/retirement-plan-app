@@ -13,6 +13,10 @@ let prettyNr = ( number ) => {
 	return addCommas( roundDecimal ( number ))
 }
 
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
 // Function to calculate compound interest from a customer object
 let calcCompound = ( customer, callback ) => {
 	// Set end amount variable and calculate total duration
@@ -52,5 +56,39 @@ let calcCompound = ( customer, callback ) => {
 	callback ( customer )
 }
 
+let fluctCompound = ( customer, callback ) => {
+	// function simulates reality to calculate pension when the pessimistic and optimistic interests fluctuate randomly
+
+	// initialize first endamount
+	customer.pension.endamount = {
+		fluctuating: customer.finances.startcapital
+	}
+	customer.pension.duration = customer.pension.age - customer.age
+
+	// fluctuate between the pessimistic and optimistic values
+	let interests = [1.02, 1.08]
+		// create an array for addition of the yearly increase only on the second loop! That is why the last item is 0, and others are 1
+	let yearAddBool = new Array( customer.pension.duration )
+	for( j = 0; j < yearAddBool.length; j++ ) {
+		if ( j == yearAddBool.length-1 ) {
+			yearAddBool[j] = 0
+		} else {
+			yearAddBool[j] = 1
+		}
+	}
+
+	for (var i = customer.pension.duration - 1; i >= 0; i--) {
+		customer.pension.endamount.fluctuating += ( customer.finances.monthlyadd * 12 * customer.finances.yearlyincrease * yearAddBool[i] )
+		// the interest will be any random number between the pessimistic and optimistic values
+		customer.pension.endamount.fluctuating *= getRandomArbitrary(1.02, 1.08)
+	}
+	customer.pension.endamount.fluctuating = prettyNr( customer.pension.endamount.fluctuating )
+	callback ( customer )
+}
+
 // Export module
-module.exports = calcCompound
+module.exports = {
+	calcCompound: calcCompound,
+	fluctCompound: fluctCompound
+}
+

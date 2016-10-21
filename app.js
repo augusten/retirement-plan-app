@@ -2,7 +2,7 @@
 const express 	 = require( 'express' )
 const fs	     = require( 'fs' )
 const bodyParser = require( 'body-parser' )
-const calcComp = require( __dirname + "/includes/js/calc-compound")
+const compound = require( __dirname + "/includes/js/calc-compound")
 const app 	     = express()
 
 // Some initial settings to use PUG
@@ -35,9 +35,18 @@ app.post( '/result', urlencodedParser, (req, res) => {
 			}
 		}
 	}
-	calcComp( user, ( data ) => {
-		res.render( 'result', {userData: data} )
-	} )
+	// choose what to render based on the button pushed
+	if (req.body.enter === "subm") {
+		console.log("submitted")
+		compound.calcCompound( user, ( data ) => {
+			res.render( 'result', {userData: data} )
+		} )
+	} else if ( req.body.enter === "simulate" ) {
+		console.log("simulated")
+		compound.fluctCompound( user, ( data ) => {
+			res.render( 'result', {userData: data} )
+		} )
+	}
 } )
 
 app.listen( 8000, () => {
