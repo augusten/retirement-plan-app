@@ -17,6 +17,15 @@ function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
 }
 
+function dealWithExponents ( number ) {
+	var n = number.toString();
+	var parts = n.split("e+");
+	var first = parts[0].replace('.', "");
+	var zeroes = parseInt(parts[1], 10) - (first.length - 1);
+	for(var i = 0; i < zeroes; i++){ first += "0"; }
+	return first.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
+
 // Function to calculate compound interest from a customer object
 let calcCompound = ( customer, callback ) => {
 	// Set end amount variable and calculate total duration
@@ -65,9 +74,7 @@ let fluctCompound = ( customer, callback ) => {
 	}
 	customer.pension.duration = customer.pension.age - customer.age
 
-	// fluctuate between the pessimistic and optimistic values
-	let interests = [1.02, 1.08]
-		// create an array for addition of the yearly increase only on the second loop! That is why the last item is 0, and others are 1
+	// create an array for addition of the yearly increase only on the second loop! That is why the last item is 0, and others are 1
 	let yearAddBool = new Array( customer.pension.duration )
 	for( j = 0; j < yearAddBool.length; j++ ) {
 		if ( j == yearAddBool.length-1 ) {
@@ -108,7 +115,9 @@ let spCompound = ( customer, spArray, callback ) => {
 		customer.pension.endamount.sp500 *= spArray[spArray.length - 1 - i]
 		// console.log(customer.pension.endamount.sp500)
 	}
-	customer.pension.endamount.sp500 = prettyNr( customer.pension.endamount.sp500 )
+	customer.pension.endamount.sp500 = dealWithExponents( customer.pension.endamount.sp500 )
+	console.log(customer.pension.endamount.sp500)
+	// customer.pension.endamount.sp500 = prettyNr( customer.pension.endamount.sp500 )
 	callback ( customer )
 }
 
