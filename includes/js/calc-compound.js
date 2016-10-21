@@ -86,9 +86,36 @@ let fluctCompound = ( customer, callback ) => {
 	callback ( customer )
 }
 
+let spCompound = ( customer, spArray, callback ) => {
+	// function simulates reality to calculate pension when the pessimistic and optimistic interests fluctuate randomly
+	// initialize first endamount
+	customer.pension.endamount = {
+		sp500: customer.finances.startcapital
+	}
+		// create an array for addition of the yearly increase only on the second loop! That is why the last item is 0, and others are 1
+	let yearAddBool = new Array( spArray.length )
+	for( j = 0; j < yearAddBool.length; j++ ) {
+		if ( j == yearAddBool.length-1 ) {
+			yearAddBool[j] = 0
+		} else {
+			yearAddBool[j] = 1
+		}
+	}
+
+	for (var i = spArray.length - 1; i >= 0; i--) {
+		customer.pension.endamount.sp500 += ( customer.finances.monthlyadd * 12 * customer.finances.yearlyincrease * yearAddBool[i] )
+		// the interest will be the index from that year in the SP 500 data
+		customer.pension.endamount.sp500 *= spArray[spArray.length - 1 - i]
+		console.log(customer.pension.endamount.sp500)
+	}
+	customer.pension.endamount.sp500 = prettyNr( customer.pension.endamount.sp500 )
+	callback ( customer )
+}
+
 // Export module
 module.exports = {
 	calcCompound: calcCompound,
-	fluctCompound: fluctCompound
+	fluctCompound: fluctCompound,
+	spCompound: spCompound
 }
 

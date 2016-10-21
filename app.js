@@ -1,8 +1,11 @@
 // Add some requirements to the file
 const express 	 = require( 'express' )
 const fs	     = require( 'fs' )
+const xls = require ( 'xlsjs' )
+// const Excel = require('exceljs')
 const bodyParser = require( 'body-parser' )
 const compound = require( __dirname + "/includes/js/calc-compound")
+const indexList = require( __dirname + "/includes/js/read-excel")
 const app 	     = express()
 
 // Some initial settings to use PUG
@@ -37,15 +40,21 @@ app.post( '/result', urlencodedParser, (req, res) => {
 	}
 	// choose what to render based on the button pushed
 	if (req.body.enter === "subm") {
-		console.log("submitted")
+		// console.log("submitted")
 		compound.calcCompound( user, ( data ) => {
 			res.render( 'result', {userData: data} )
 		} )
 	} else if ( req.body.enter === "simulate" ) {
-		console.log("simulated")
+		// console.log("simulated")
 		compound.fluctCompound( user, ( data ) => {
 			res.render( 'result', {userData: data} )
 		} )
+	} else if ( req.body.enter === "history" ) {
+		indexList( __dirname + '/includes/historical_data/histretSP.xls', ( array ) => {
+			compound.spCompound( user, array, ( data ) => {
+				res.render('sp500', {userData: data})
+			})
+		})
 	}
 } )
 
