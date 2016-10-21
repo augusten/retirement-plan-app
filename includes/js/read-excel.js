@@ -1,4 +1,8 @@
+// module to read excel files
+const xls = require ( 'xlsjs' )
+
 function indexList ( filename, cb ) {
+	// function returns a list of the values in column B from 41 to 106
 	let workbook = xls.readFile( filename )
 	let sheet_name_list = workbook.SheetNames
 	let sheet = workbook.Sheets[sheet_name_list[0]]

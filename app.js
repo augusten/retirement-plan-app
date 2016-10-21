@@ -2,7 +2,6 @@
 const express 	 = require( 'express' )
 const fs	     = require( 'fs' )
 const xls = require ( 'xlsjs' )
-// const Excel = require('exceljs')
 const bodyParser = require( 'body-parser' )
 const compound = require( __dirname + "/includes/js/calc-compound")
 const indexList = require( __dirname + "/includes/js/read-excel")

@@ -106,7 +106,7 @@ let spCompound = ( customer, spArray, callback ) => {
 		customer.pension.endamount.sp500 += ( customer.finances.monthlyadd * 12 * customer.finances.yearlyincrease * yearAddBool[i] )
 		// the interest will be the index from that year in the SP 500 data
 		customer.pension.endamount.sp500 *= spArray[spArray.length - 1 - i]
-		console.log(customer.pension.endamount.sp500)
+		// console.log(customer.pension.endamount.sp500)
 	}
 	customer.pension.endamount.sp500 = prettyNr( customer.pension.endamount.sp500 )
 	callback ( customer )
