@@ -2,6 +2,7 @@
 const express 	 = require( 'express' )
 const fs	     = require( 'fs' )
 const bodyParser = require( 'body-parser' )
+const calcComp = require( __dirname + "/includes/js/calc-compound")
 const app 	     = express()
 
 // Some initial settings to use PUG
@@ -16,8 +17,27 @@ app.get( '/', (req, res) => {
 	res.render( 'index' )
 } )
 
-app.post( '/result', (req, res) => {
-	res.render( 'index' )
+app.post( '/result', urlencodedParser, (req, res) => {
+	let user = {
+		name: req.body.name,
+		"age": Number(req.body.age),
+		"finances": {
+			"startcapital": Number(req.body.scapital),
+			"monthlyadd": Number(req.body.monthly),
+			"yearlyincrease": Number(req.body.yearIncrease) / 100 + 1
+		},
+		"pension": {
+			"age": Number(req.body.rage),
+			"interest": {
+				"pessimistic": 1.02,
+				"average": 1.04,
+				"optimistic": 1.08
+			}
+		}
+	}
+	calcComp( user, ( data ) => {
+		res.render( 'result', {userData: data} )
+	} )
 } )
 
 app.listen( 8000, () => {
